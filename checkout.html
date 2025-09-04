@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout - Trendaura Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    /* ... your CSS stays unchanged ... */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg,#f5f1e9,#f0e5ca);
+      color: #222;
+      padding: 0;
+    }
+    header.header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fffbea;
+      border-bottom: 2px solid #191919;
+      padding: 13px 4vw;
+      min-height: 58px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .store-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.38rem;
+      font-weight: 700;
+      color: #c49c26;
+      letter-spacing: 1.6px;
+      user-select: none;
+      white-space: nowrap;
+      margin: 0;
+      flex-grow: 1;
+      text-align: center;
+    }
+    .cart-link {
+      background: #dab609;
+      color: #222;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 8px 24px;
+      border-radius: 24px;
+      font-size: 1.05rem;
+      box-shadow: 0 3px 9px #ecd48877;
+      transition: background 0.2s;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      user-select: none;
+    }
+    .cart-link:hover {
+      background: #b38203;
+      color: #fff;
+    }
+    .cart-count {
+      background: #fff;
+      color: #222;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      margin-left: 6px;
+    }
+    main.checkout-container {
+      max-width: 940px;
+      margin: 35px auto 60px auto;
+      background: #fffcea;
+      border-radius: 20px;
+      box-shadow: 0 12px 35px rgb(0 0 0 / 0.15);
+      display: flex;
+      gap: 40px;
+      padding: 40px;
+      flex-wrap: wrap;
+    }
+    .checkout-left, .checkout-right {
+      flex: 1;
+      min-width: 320px;
+    }
+    h2 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #997f0a;
+      margin-bottom: 32px;
+      user-select: none;
+    }
+    .order-summary {
+      border: 2px solid #ddcf87;
+      border-radius: 16px;
+      padding: 22px 28px;
+      background: #f9f6df;
+      box-shadow: inset 0 0 15px #f4e6a1;
+      max-height: 480px;
+      overflow-y: auto;
+    }
+    .order-summary::-webkit-scrollbar {
+      width: 8px;
+    }
+    .order-summary::-webkit-scrollbar-track {
+      background: #f9f6df;
+      border-radius: 16px;
+    }
+    .order-summary::-webkit-scrollbar-thumb {
+      background: #d3b726;
+      border-radius: 16px;
+    }
+    .order-summary::-webkit-scrollbar-thumb:hover {
+      background: #b88800;
+    }
+    .order-summary p {
+      font-size: 1.1rem;
+      text-align: center;
+      color: #777;
+      user-select: none;
+    }
+    .order-item {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #dbd1a3;
+      padding-bottom: 16px;
+    }
+    .order-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 0 10px #d8c658cc;
+      border: 2px solid #d1bc4b;
+    }
+    .order-item-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .order-item-name {
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 8px;
+      color: #2a2a2a;
+    }
+    .order-item-info p {
+      margin: 2px 0;
+      font-size: 1rem;
+      color: #886e0a;
+      font-weight: 600;
+      user-select: none;
+    }
+    .order-total {
+      font-weight: 900;
+      font-size: 1.4rem;
+      text-align: right;
+      margin-top: 15px;
+      color: #997f0a;
+      user-select: none;
+    }
+    form.shipping-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #664d00;
+      user-select: none;
+    }
+    input, select {
+      padding: 12px 16px;
+      border: 1.8px solid #d0be56;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #cfa90a;
+      box-shadow: 0 0 8px #cfa90a88;
+    }
+    .payment-methods {
+      margin-top: 15px;
+    }
+    .payment-methods label {
+      margin-right: 25px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    #upi-container {
+      margin-top: 10px;
+      display: none;
+    }
+    #upi-container input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.8px solid #d0be56;
+      border-radius: 12px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    button.place-order-btn {
+      background: #b38300;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.15rem;
+      border: none;
+      padding: 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      margin-top: 35px;
+      user-select: none;
+      transition: background 0.3s;
+    }
+    button.place-order-btn:hover {
+      background: #d5af08;
+      color: #222;
+    }
+    @media (max-width: 780px) {
+      main.checkout-container {
+        flex-direction: column;
+        padding: 20px;
+        margin: 25px 12px 40px 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header-bar">
+    <span class="store-name">TRENDaura Store</span>
+    <a href="cart.html" class="cart-link" aria-label="View Cart">
+      🛒 Cart <span id="cart-count" class="cart-count">0</span>
+    </a>
+  </header>
+  <main class="checkout-container">
+    <section class="checkout-left">
+      <h2>Order Summary</h2>
+      <div id="order-summary" class="order-summary"></div>
+    </section>
+    <section class="checkout-right">
+      <h2>Shipping Details</h2>
+      <form id="shipping-form" class="shipping-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required autocomplete="name" />
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" required autocomplete="street-address" />
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required autocomplete="address-level2" />
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" required autocomplete="address-level1" />
+        <label for="zip">Zip Code</label>
+        <input type="text" id="zip" name="zip" required autocomplete="postal-code" />
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" />
+        <div class="payment-methods">
+          <label><input type="radio" name="payment" value="COD" checked /> Cash on Delivery</label>
+          <label><input type="radio" name="payment" value="UPI" /> UPI</label>
+        </div>
+        <div id="upi-container">
+          <input type="text" id="upiId" name="upiId" placeholder="Enter your UPI ID" autocomplete="off" />
+        </div>
+        <button type="submit" class="place-order-btn">Place Order</button>
+      </form>
+    </section>
+  </main>
+  <script src="cart-count.js"></script>
+  <script src="products.js"></script>
+  <script>
+    // Buy Now OR Cart data logic - place at the very top!
+    const isBuyNow = localStorage.getItem('isBuyNow') === 'true';
+    let cart = [];
+
+    if (isBuyNow) {
+      const buyNowItem = JSON.parse(localStorage.getItem('buyNowItem'));
+      if (buyNowItem) {
+        cart = [buyNowItem];
+      }
+      localStorage.removeItem('buyNowItem');
+      localStorage.removeItem('isBuyNow');
+    } else {
+      cart = JSON.parse(localStorage.getItem('cart')) || [];
+    }
+
+    function updateCartCount() {
+      const cartCountElem = document.getElementById('cart-count');
+      if (!cartCountElem) return;
+      const totalCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      cartCountElem.textContent = totalCount;
+    }
+
+    updateCartCount();
+
+    function renderOrderSummary() {
+      const orderSummaryElem = document.getElementById('order-summary');
+      orderSummaryElem.innerHTML = '';
+      if (cart.length === 0) {
+        orderSummaryElem.innerHTML = '<p>Your cart is empty.</p>';
+        return 0;
+      }
+      let totalPrice = 0;
+      cart.forEach(item => {
+        const priceNum = parseFloat(item.price.replace(/[^0-9.-]+/g, ""));
+        const itemTotal = priceNum * (item.qty || 1);
+        totalPrice += itemTotal;
+        const div = document.createElement('div');
+        div.className = 'order-item';
+        div.innerHTML = `
+          <img src="${item.mainImage}" alt="${item.name}" />
+          <div class="order-item-info">
+            <div class="order-item-name">${item.name} - ${item.size}</div>
+            <p>₹${priceNum.toFixed(2)} x ${item.qty}</p>
+          </div>
+        `;
+        orderSummaryElem.appendChild(div);
+      });
+      const totalDiv = document.createElement('div');
+      totalDiv.className = 'order-total';
+      totalDiv.textContent = `Total: ₹${totalPrice.toFixed(2)}`;
+      orderSummaryElem.appendChild(totalDiv);
+      return totalPrice;
+    }
+
+    function saveShippingData() {
+      const form = document.getElementById('shipping-form');
+      const data = {
+        name: form.name.value,
+        address: form.address.value,
+        city: form.city.value,
+        state: form.state.value,
+        zip: form.zip.value,
+        phone: form.phone.value,
+        payment: form.payment.value,
+        upiId: form.upiId.value
+      };
+      localStorage.setItem('shippingData', JSON.stringify(data));
+    }
+
+    function loadShippingData() {
+      const saved = localStorage.getItem('shippingData');
+      if (!saved) return;
+      const data = JSON.parse(saved);
+      const form = document.getElementById('shipping-form');
+      form.name.value = data.name || '';
+      form.address.value = data.address || '';
+      form.city.value = data.city || '';
+      form.state.value = data.state || '';
+      form.zip.value = data.zip || '';
+      form.phone.value = data.phone || '';
+      if(data.payment) {
+        const paymentInput = form.querySelector(`input[name="payment"][value="${data.payment}"]`);
+        if(paymentInput) paymentInput.checked = true;
+      }
+      if(data.upiId) form.upiId.value = data.upiId || '';
+      toggleUpiContainer();
+    }
+
+    function toggleUpiContainer() {
+      const form = document.getElementById('shipping-form');
+      const upiContainer = document.getElementById('upi-container');
+      const paymentValue = form.payment.value;
+      if(paymentValue === 'UPI') {
+        upiContainer.style.display = 'block';
+      } else {
+        upiContainer.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderOrderSummary();
+      loadShippingData();
+
+      const form = document.getElementById('shipping-form');
+      form.addEventListener('input', saveShippingData);
+      form.addEventListener('change', () => {
+        saveShippingData();
+        toggleUpiContainer();
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if(form.payment.value === 'UPI' && form.upiId.value.trim() === '') {
+          alert('Please enter your UPI ID.');
+          return;
+        }
+
+        alert('Order placed successfully! Thank you for shopping with us.');
+
+        const orderData = {
+          id: 'ORD' + Date.now(), // unique order id
+          date: new Date().toLocaleString(),
+          shippingDetails: {
+            name: form.name.value,
+            address: form.address.value,
+            city: form.city.value,
+            state: form.state.value,
+            zip: form.zip.value,
+            phone: form.phone.value,
+            payment: form.payment.value,
+            upiId: form.upiId.value
+          },
+          cartItems: cart, // <-- use the initialized cart variable
+          orderTotal: renderOrderSummary()
+        };
+
+        let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+        orderHistory.push(orderData);
+        localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+
+        localStorage.removeItem('cart');
+        localStorage.removeItem('shippingData');
+        updateCartCount();
+        window.location.href = 'index.html';
+      });
+    });
+  </script>
+</body>
+</html>

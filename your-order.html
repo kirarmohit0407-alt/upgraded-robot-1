@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Orders - Trendaura Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 0 15px 50px;
+      color: #222;
+      background: #f7f7f7;
+    }
+    h1 {
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      text-align: center;
+      color: #b39625;
+    }
+    .orders-container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+      padding: 24px;
+    }
+    .order {
+      border-bottom: 1px solid #eee;
+      padding: 18px 0;
+      position: relative;
+      word-break: break-word;
+      background: #fcfbf1;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px #ddd8b175;
+    }
+    .order:last-child { border-bottom: none; }
+    .order-header {
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #997f0a;
+      margin-bottom: 12px;
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cancel-btn {
+      font-size: 22px;
+      font-weight: 900;
+      line-height: 1;
+      color: #d9534f;
+      cursor: pointer;
+      user-select: none;
+      border: none;
+      background: none;
+      padding: 0 10px;
+      transition: color 0.25s;
+      border-radius: 50%;
+      height: 28px;
+      width: 28px;
+      text-align: center;
+      line-height: 28px;
+      font-family: Arial, sans-serif;
+    }
+    .cancel-btn:hover {
+      color: #a63933;
+      background:#fddede;
+    }
+    .order-section {
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+    .order-section strong {
+      font-weight: 700;
+      color: #222;
+    }
+    .order-item-list {
+      margin-top: 10px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+    .order-item {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 14px;
+      align-items: center;
+    }
+    .order-item img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 0 10px #d4af37aa;
+      border: 2px solid #b39625;
+      flex-shrink: 0;
+    }
+    .order-item-info {
+      flex-grow: 1;
+    }
+    .order-item-info .name {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+      margin-bottom: 3px;
+    }
+    .order-item-info .details {
+      font-size: 0.95rem;
+      color: #666;
+    }
+    .order-total {
+      font-weight: 900;
+      font-size: 1.3rem;
+      margin-top: 10px;
+      color: #b39625;
+      user-select: none;
+      text-align: right;
+    }
+    .cancel-info {
+      margin-top: 8px;
+      background: #ffeeee;
+      color: #a63933;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+    .refund-info {
+      margin-top: 6px;
+      background: #fffbe1;
+      color: #b3860b;
+      padding: 7px 15px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+    #cancel-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.55);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    #cancel-modal .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    #cancel-modal h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      color: #b33;
+    }
+    #cancel-reason, #cancel-comments {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0 12px;
+      border-radius: 8px;
+      border: 1.5px solid #ccc;
+      font-size: 1rem;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    #cancel-comments {
+      height: 80px;
+    }
+    .modal-buttons {
+      text-align: right;
+      margin-top: 15px;
+    }
+    .modal-buttons button {
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      border: none;
+      margin-left: 8px;
+    }
+    #cancel-modal-close {
+      background: #bbb;
+      color: #333;
+    }
+    #cancel-modal-close:hover {
+      background: #999;
+    }
+    #cancel-modal-submit {
+      background: #b33;
+      color: #fff;
+    }
+    #cancel-modal-submit:hover {
+      background: #922;
+    }
+    @media (max-width: 600px) {
+      body { padding: 20px 10px 40px; max-width: 100%; }
+      .order-item { flex-direction: column; align-items: flex-start; }
+      .order-item img { width: 100%; height: auto; border-radius: 8px; margin-bottom: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Your Orders</h1>
+  <div class="orders-container" id="orders-container">
+    <!-- Orders will be dynamically inserted here -->
+  </div>
+
+  <!-- Cancel Reason Modal -->
+  <div id="cancel-modal" aria-modal="true" role="dialog" aria-labelledby="cancel-modal-title" aria-describedby="cancel-modal-desc">
+    <div class="modal-content">
+      <h3 id="cancel-modal-title">Cancel Your Order</h3>
+      <label for="cancel-reason">Reason for cancellation:</label>
+      <select id="cancel-reason" aria-required="true" aria-describedby="cancel-reason-error">
+        <option value="" disabled selected>Select a reason</option>
+        <option value="Changed mind">Changed mind</option>
+        <option value="Found better price">Found better price</option>
+        <option value="Delivery delay">Delivery delay</option>
+        <option value="Product issue">Product issue</option>
+        <option value="Other">Other</option>
+      </select>
+      <span id="cancel-reason-error" style="display:none; color: #b33; font-size: 0.9rem;">Please select a reason.</span>
+      <label for="cancel-comments">Additional comments (optional):</label>
+      <textarea id="cancel-comments" placeholder="Add any details here..."></textarea>
+      <div class="modal-buttons">
+        <button id="cancel-modal-close" type="button">Close</button>
+        <button id="cancel-modal-submit" type="button">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ordersContainer = document.getElementById('orders-container');
+    const cancelModal = document.getElementById('cancel-modal');
+    const cancelReasonSelect = document.getElementById('cancel-reason');
+    const cancelReasonError = document.getElementById('cancel-reason-error');
+    const cancelCommentsInput = document.getElementById('cancel-comments');
+    const cancelModalClose = document.getElementById('cancel-modal-close');
+    const cancelModalSubmit = document.getElementById('cancel-modal-submit');
+
+    let currentCancelIndex = null; // Tracks which order is being cancelled
+
+    function renderOrders() {
+      ordersContainer.innerHTML = '';
+      const orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+
+      if (orderHistory.length === 0) {
+        ordersContainer.innerHTML = "<p>No orders found. Start shopping now!</p>";
+        return;
+      }
+
+      orderHistory.forEach((order, index) => {
+        const orderDiv = document.createElement('div');
+        orderDiv.classList.add('order');
+
+        const isCancelled = order.status === 'Cancelled';
+
+        let cancelInfoHtml = '';
+        let refundInfoHtml = '';
+
+        if(isCancelled){
+          cancelInfoHtml = `<div class="cancel-info"><strong>Order Cancelled:</strong> ${order.cancelReason || 'No reason provided'}`;
+          if(order.cancelComments){
+            cancelInfoHtml += `<br/><em>${order.cancelComments}</em>`;
+          }
+          cancelInfoHtml += `<br/>Cancelled on: ${order.cancelDate || 'N/A'}</div>`;
+
+          if(order.shippingDetails.payment === 'UPI' || order.shippingDetails.payment === 'Card'){
+            refundInfoHtml = `<div class="refund-info">Refund Status: ${order.refundStatus || 'Pending Refund'}. Refund will be processed within 7 business days to your payment method.</div>`;
+          }
+        }
+
+        orderDiv.innerHTML = `
+          <button class="cancel-btn" title="Cancel this order" aria-label="Cancel order" ${isCancelled ? 'disabled style="color:#aaa;cursor:not-allowed;"' : ''}>&times;</button>
+          <div class="order-header">
+            <div>Order ID: <strong>${order.id}</strong> | Date: <strong>${order.date}</strong></div>
+            <div>${isCancelled ? '<span style="color:#b33;font-weight:900;">[Cancelled]</span>' : ''}</div>
+          </div>
+          <div class="order-section">
+            <strong>Shipping Information:</strong><br>
+            Name: ${order.shippingDetails.name}<br>
+            Address: ${order.shippingDetails.address}, ${order.shippingDetails.city}, ${order.shippingDetails.state} - ${order.shippingDetails.zip}<br>
+            Phone: ${order.shippingDetails.phone}<br>
+            Payment Method: ${order.shippingDetails.payment}${order.shippingDetails.payment === 'UPI' ? ' ('+order.shippingDetails.upiId+')' : ''}
+          </div>
+          <div class="order-section">
+            <strong>Order Items:</strong>
+            <div class="order-item-list">
+              ${order.cartItems.map(item => `
+                <div class="order-item">
+                  <img src="${item.mainImage}" alt="${item.name}" />
+                  <div class="order-item-info">
+                    <div class="name">${item.name}</div>
+                    <div class="details">
+                      Size: ${item.size}<br/>
+                      Quantity: ${item.qty}<br/>
+                      Price per item: ${item.price}
+                    </div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+          ${cancelInfoHtml}
+          ${refundInfoHtml}
+          <div class="order-total">Total Paid: ₹${order.orderTotal.toFixed(2)}</div>
+        `;
+
+        const cancelBtn = orderDiv.querySelector('.cancel-btn');
+        cancelBtn.addEventListener('click', () => {
+          if(isCancelled) return; // Disabled button if already cancelled
+
+          currentCancelIndex = index;
+          cancelReasonSelect.value = '';
+          cancelReasonError.style.display = 'none';
+          cancelCommentsInput.value = '';
+          cancelModal.style.display = 'flex';
+        });
+
+        ordersContainer.appendChild(orderDiv);
+      });
+    }
+
+    cancelModalClose.addEventListener('click', () => {
+      cancelModal.style.display = 'none';
+    });
+
+    cancelModalSubmit.addEventListener('click', () => {
+      const reason = cancelReasonSelect.value;
+      const comments = cancelCommentsInput.value.trim();
+
+      if(!reason){
+        cancelReasonError.style.display = 'block';
+        return;
+      } else {
+        cancelReasonError.style.display = 'none';
+      }
+
+      let orders = JSON.parse(localStorage.getItem('orderHistory')) || [];
+      const order = orders[currentCancelIndex];
+
+      order.status = 'Cancelled';
+      order.cancelReason = reason;
+      order.cancelComments = comments;
+      order.cancelDate = new Date().toLocaleString();
+
+      if(order.shippingDetails.payment === 'UPI' || order.shippingDetails.payment === 'Card'){
+        order.refundStatus = 'Pending Refund';
+      } else {
+        order.refundStatus = 'Not Applicable';
+      }
+
+      orders[currentCancelIndex] = order;
+      localStorage.setItem('orderHistory', JSON.stringify(orders));
+
+      cancelModal.style.display = 'none';
+      renderOrders();
+
+      alert('Your cancellation request has been recorded.');
+    });
+
+    // Initial render on page load
+    renderOrders();
+  </script>
+</body>
+</html>

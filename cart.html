@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Cart - Trendaura Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg,#f5f1e9,#f0e5ca);
+      font-family: 'Poppins', sans-serif;
+      color: #222;
+      padding: 0;
+    }
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #fffbea;
+      border-bottom: 2px solid #191919;
+      padding: 13px 4vw;
+      min-height: 58px;
+    }
+    .store-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.38rem;
+      font-weight: 700;
+      color: #c49a2c;
+      letter-spacing: 1.6px;
+      user-select: none;
+      white-space: nowrap;
+      margin: 0;
+      flex-grow: 1;
+      text-align: center;
+    }
+    .cart-link {
+      background: #dab609;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 8px 24px;
+      border-radius: 24px;
+      font-size: 1.05rem;
+      box-shadow: 0 3px 9px #ecd48877;
+      transition: background 0.2s;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      user-select: none;
+    }
+    .cart-link:hover {
+      background: #b38303;
+    }
+    .cart-count {
+      background: #fff;
+      color: #222;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      margin-left: 6px;
+    }
+    .cart-page-container {
+      max-width: 900px;
+      margin: 45px auto 24px auto;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 24px #ccb86b38;
+      padding: 28px 36px 32px 36px;
+      position: relative;
+    }
+    .cart-header {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size:1.18rem; font-weight:700; margin-bottom:10px;
+    }
+    .cart-title { font-size:1.18rem; color:#222; }
+    .cart-close-btn {
+      background: none; border: none; font-size:2rem;
+      color:#333; cursor:pointer; padding:0 12px;
+      line-height: 1; transition: color 0.19s;
+    }
+    .cart-close-btn:hover { color:#e74c3c; }
+    .cart-info {
+      display: flex; align-items: center; gap:7px; font-size:1.02rem; margin-bottom:6px; color:#333;
+    }
+    .cart-info-icon { font-size: 1.29rem;}
+    .cart-divider {
+      border-top: 3px solid #28c63b;
+      margin: 7px 0 13px 0;
+    }
+    .cart-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 24px;
+      background: white;
+      border-radius: 13px;
+      overflow: hidden;
+      box-shadow: 0 2px 22px #f8ead2cc;
+    }
+    .cart-table th, .cart-table td {
+      padding: 13px 14px;
+      text-align: left;
+      font-size: 1.07rem;
+      vertical-align: middle;
+    }
+    .cart-table th {
+      background: #ffefb6;
+      font-weight: 800;
+      color: #997c13;
+      font-size: 1.1rem;
+      border-bottom: 2px solid #f3e7be;
+    }
+    .cart-img-col { width: 68px; }
+    .cart-img {
+      width: 62px;
+      height: 62px;
+      object-fit: cover;
+      border-radius: 11px;
+      box-shadow: 0 2px 18px #efecddbb;
+      border: 1.5px solid #ebdbab;
+      background: #f7f1e9;
+    }
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .qty-btn {
+      background: #dab609;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      width: 32px;
+      height: 34px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .qty-btn:hover { background: #b38303;}
+    .qty-value {
+      min-width: 32px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.06rem;
+      background:#fffbea;
+      border-radius:7px;
+      border:1.2px solid #eed085;
+      box-shadow:0 .5px 4px #eed08522;
+      padding:3px 0;
+      color: #997c13;
+    }
+    .remove-btn {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      border-radius: 7px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      padding: 7px 18px;
+      cursor: pointer;
+      margin-left: 10px;
+      transition: background 0.2s;
+    }
+    .remove-btn:hover { background: #b63a26;}
+    .cart-total-section { margin-top:24px;text-align:center;}
+    .cart-total-row {
+      display:flex; justify-content:center; gap:16px;
+      font-weight:900; font-size:1.26rem;
+      color:#222; margin-bottom:7px;
+    }
+    .cart-total-value { color:#222;}
+    .cart-note {
+      font-size:1.02rem; color:#888; margin-bottom:13px;
+    }
+    .cart-checkout-btn {
+      background:#222; color:#fff; font-weight:700; font-size:1.09rem;
+      padding:13px 0; border:none; border-radius:8px; width:92%;
+      cursor:pointer; margin-bottom:9px; transition:background 0.13s;
+    }
+    .cart-checkout-btn:hover { background:#dab609; color:#191919;}
+    .view-cart-link a {
+      font-size:1rem; color:#222;
+      text-decoration:underline; letter-spacing:.08em;
+    }
+    @media (max-width: 640px){
+      .cart-page-container{padding: 8px;}
+      .cart-table th, .cart-table td{padding: 6px 3px;font-size:0.93rem;}
+      .cart-title{font-size:1.13rem;}
+      .cart-header{font-size:1rem;}
+      .cart-total-row{font-size:.98rem;}
+      .cart-img{width:45px;height:45px;}
+      .cart-checkout-btn{padding:10px 0;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header-bar">
+    <span class="store-name">TRENDaura Store</span>
+    <a href="cart.html" class="cart-link" aria-label="View Cart">
+      🛒 Cart <span id="cart-count" class="cart-count">0</span>
+    </a>
+  </header>
+  <div class="cart-page-container">
+    <div class="cart-header">
+      <span class="cart-title">Cart</span>
+      <button class="cart-close-btn" onclick="closeCart()">&times;</button>
+    </div>
+    <div class="cart-info">
+      <span class="cart-info-icon">&#128230;</span>
+      <span>Your order is free delivery!</span>
+    </div>
+    <div class="cart-divider"></div>
+    <table class="cart-table" id="cart-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product</th>
+          <th>Size</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="cart-body"></tbody>
+    </table>
+    <div class="cart-total-section">
+      <div class="cart-total-row">
+        <span>Total:</span>
+        <span class="cart-total-value" id="cart-total-value">₹0</span>
+      </div>
+      <div class="cart-note">Taxes and shipping calculated at checkout</div>
+      <button class="cart-checkout-btn" onclick="window.location.href='checkout.html'">CHECK OUT</button>
+      <div class="view-cart-link"><a href="cart.html">VIEW CART</a></div>
+    </div>
+  </div>
+  <script>
+    function updateCartCount() {
+      const cartCountElem = document.getElementById('cart-count');
+      if (!cartCountElem) return;
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      cartCountElem.textContent = totalCount;
+    }
+
+    function renderCart() {
+      const cartBody = document.getElementById('cart-body');
+      const cartTotalValue = document.getElementById('cart-total-value');
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cartBody.innerHTML = '';
+      let total = 0;
+
+      if(cart.length===0){
+        cartBody.innerHTML = '<tr><td colspan="6">Your cart is empty.</td></tr>';
+        cartTotalValue.textContent = "₹0";
+        updateCartCount();
+        return;
+      }
+
+      cart.forEach((item, idx) => {
+        let row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="cart-img-col"><img class="cart-img" src="${item.mainImage}" alt="${item.name}" /></td>
+          <td>${item.name}</td>
+          <td>${item.size}</td>
+          <td>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty(${idx},-1)">-</button>
+              <span class="qty-value">${item.qty}</span>
+              <button class="qty-btn" onclick="changeQty(${idx},1)">+</button>
+            </div>
+          </td>
+          <td>${item.price}</td>
+          <td>
+            <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
+          </td>
+        `;
+        cartBody.appendChild(row);
+        total += parseInt(item.price.replace('₹','')) * (item.qty || 1);
+      });
+
+      cartTotalValue.textContent = `₹${total}`;
+      updateCartCount();
+    }
+
+    function changeQty(idx, change){
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart[idx].qty += change;
+      if(cart[idx].qty<1) cart[idx].qty = 1;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeItem(idx){
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(idx,1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    function closeCart() {
+      window.location.href = '/'; // Home page or any desired location
+    }
+    function checkoutCart() {
+      alert('Checkout process (add your logic here)');
+      // You can redirect to your payment gateway or checkout page here
+    }
+
+    document.addEventListener("DOMContentLoaded", renderCart);
+  </script>
+</body>
+</html>

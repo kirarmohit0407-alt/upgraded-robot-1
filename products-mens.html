@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mens Collection - Trendaura Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet" />
+  <style>
+    .cart-link {
+  background: #dab609;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 8px 24px;
+  border-radius: 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 3px 9px rgba(236, 212, 136, 0.47);
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+}
+.cart-link:hover {
+  background: #b38303;
+}
+
+    /* Tumhari existing CSS yahan hi rahegi unchanged, sirf yeh chhota part update hai */
+
+    #suggestions {
+      position: absolute;
+      max-width: 240px;
+      background: #fffbea;
+      border: 1.5px solid #dab609;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(212, 175, 55, 0.13), 0 1px 8px rgba(0,0,0,0.10);
+      padding: 10px 0;
+      display: none;
+      z-index: 9999;
+      top: 44px;             /* search input ke neeche */
+      right: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+    }
+    .suggestion-item {
+      padding: 10px 16px;
+      cursor: pointer;
+      color: #2e2e2e;
+      font-weight: 500;
+      transition: background 0.22s, transform 0.18s;
+      display: flex;
+      align-items: center;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid #f1e6b8;
+      position: relative;
+    }
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+    .suggestion-item:hover {
+      background-color: #f7e16e;
+      color: #191919;
+      transform: scale(1.03) translateX(8px);
+    }
+    .suggestion-item:active {
+      animation: clickBounce 0.24s;
+    }
+    @keyframes clickBounce {
+      0% {transform: scale(0.98);}
+      50% {transform: scale(1.06);}
+      100% {transform: scale(1);}
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg,#f5f1e9,#f0e5ca);
+      font-family: 'Poppins', sans-serif;
+      color: #222;
+      padding: 0;
+    }
+    header.header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #fffbea;
+      border-bottom: 2px solid #191919;
+      padding: 9px 4vw;
+      position: sticky;
+      top: 0;
+      flex-wrap: nowrap;
+    }
+    #hamburger-btn {
+      background: none;
+      border: none;
+      height: 38px;
+      width: 38px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .hamburger-lines {
+      width: 24px;
+      height: 3px;
+      background: #191919;
+      border-radius: 2px;
+      transition: background 0.3s ease;
+    }
+    #hamburger-btn:hover .hamburger-lines,
+    #hamburger-btn:focus .hamburger-lines {
+      background: #dab609;
+    }
+    .store-name {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #c49a2c;
+      letter-spacing: 1.6px;
+      flex-shrink: 1;
+      flex-grow: 1;
+      text-align: center;
+      min-width: 80px;
+      margin: 0 3px;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .search-input {
+      border-radius: 11px;
+      border: 1px solid #ddd;
+      padding: 7px 10px;
+      font-size: 1rem;
+      background: #fffbea;
+      color: #222;
+      width: 95px;
+      max-width: 140px;
+      outline: none;
+      flex-shrink: 1;
+      margin-right: 4px;
+    }
+    .nav-icons {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-icon {
+      color: #fff;
+      background: #191919;
+      border-radius: 11px;
+      padding: 7px 11px;
+      cursor: pointer;
+      font-size: 1.08rem;
+      font-weight: 700;
+      position: relative;
+      user-select: none;
+      transition: background 0.16s, color 0.16s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-icon .badge {
+      position: absolute;
+      top: 2px;
+      right: 7px;
+      background: #ffd700;
+      color: #222;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 0px 5px;
+      border-radius: 11px;
+      user-select: none;
+    }
+    .container {
+      max-width: 940px;
+      margin: 20px auto 40px;
+      padding: 0 12px;
+    }
+    h1 {
+      color: #dab609;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      text-align: center;
+      user-select: none;
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      max-width: 700px;
+      margin: 0 auto 30px auto;
+      padding: 0 10px;
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.13);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: box-shadow 0.14s;
+      padding: 0 0 18px 0;
+      cursor: pointer;
+    }
+    .product-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+    .product-card img {
+      max-width: 100%;
+      height: auto;
+      object-fit: contain;
+      border-radius: 14px 14px 0 0;
+      background: #f7f3e4;
+      display: block;
+    }
+    .product-name {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin: 14px 0 6px 0;
+      color: #222;
+      letter-spacing: 0.2px;
+      text-align: center;
+    }
+    .price-row {
+      text-align: center;
+      margin-bottom: 9px;
+    }
+    .price-old {
+      color: #aaa;
+      text-decoration: line-through;
+      font-size: 0.98rem;
+      margin-right: 8px;
+    }
+    .price {
+      color: #222;
+      font-size: 1.09rem;
+      font-weight: 700;
+      margin: 0;
+      display: inline-block;
+    }
+    @media (max-width: 700px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+        max-width: 460px;
+        gap: 24px;
+      }
+      .product-card img {
+        height: auto;
+      }
+    }
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        max-width: 99vw;
+        padding: 0 2vw;
+      }
+      .product-card img {
+        height: auto;
+      }
+      h1 { font-size: 1.19rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header-bar">
+    <button id="hamburger-btn" aria-label="Menu" title="Menu">
+      <span class="hamburger-lines"></span>
+      <span class="hamburger-lines"></span>
+      <span class="hamburger-lines"></span>
+    </button>
+    <span class="store-name">Trendaura Store</span>
+    <input type="search" id="searchInput" class="search-input" placeholder="Search products..." autocomplete="off" />
+    <div id="suggestions"></div>
+    <div class="nav-icons">
+      <!-- Wishlist button removed -->
+      <a href="cart.html" class="nav-icon cart-link" aria-label="View Cart">
+  🛒<span id="cart-count" class="badge">0</span>
+</a>
+
+    </div>
+  </header>
+  <main class="container">
+    <h1>Men’s Collection</h1>
+    <div class="products-grid">
+      <div class="product-card" onclick="openProductDetail('mens-001')">
+        <img src="https://i.ibb.co/B56KXmVw/photo-6-2025-09-02-00-15-59.jpg" alt="Men's Black Freedom Sounds Graphic Printed Oversized Acid Wash T-shirt" />
+        <div class="product-name">Men's Black Freedom Sounds Graphic Printed Oversized Acid Wash T-shirt</div>
+        <div class="price-row">
+          <span class="price-old">₹2,199</span>
+          <span class="price">₹699</span>
+        </div>
+      </div>
+      <div class="product-card" onclick="openProductDetail('mens-002')">
+        <img src="https://i.ibb.co/39MjWcQT/photo-1-2025-09-02-00-15-59.jpg" alt="Men's Black Batman Outline Logo Graphic Printed Oversized T-shirt" />
+        <div class="product-name">Men's Black Batman Outline Logo Graphic Printed Oversized T-shirt</div>
+        <div class="price-row">
+          <span class="price-old">₹2,199</span>
+          <span class="price">₹699</span>
+        </div>
+      </div>
+      <div class="product-card" onclick="openProductDetail('mens-003')">
+        <img src="https://i.ibb.co/27rKsbqd/photo-2-2025-09-02-00-15-59.jpg" alt="Men's Black Ashura Graphic Printed Oversized T-shirt" />
+        <div class="product-name">Men's Black Ashura Graphic Printed Oversized T-shirt</div>
+        <div class="price-row">
+          <span class="price-old">₹2,199</span>
+          <span class="price">₹699</span>
+        </div>
+      </div>
+      <div class="product-card" onclick="openProductDetail('mens-004')">
+        <img src="https://i.ibb.co/WNmchT3b/photo-3-2025-09-02-00-15-59.jpg" alt="Men's White Vengeance Typography Oversized T-shirt" />
+        <div class="product-name">Men's White Vengeance Typography Oversized T-shirt</div>
+        <div class="price-row">
+          <span class="price-old">₹2,199</span>
+          <span class="price">₹699</span>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="products.js"></script>
+  <script src="search.js"></script>
+
+  <script>
+   function updateCartCount() {
+  const cartCountElem = document.getElementById('cart-count');
+  if (!cartCountElem) return;
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const totalCount = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+  cartCountElem.textContent = totalCount;
+}
+
+// Page load hone par cart count update karo
+updateCartCount();
+ 
+    function openProductDetail(productId) {
+      window.location.href = `product-detail.html?id=${productId}`;
+    }
+  </script>
+</body>
+</html>
